@@ -131,6 +131,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			beanFactory.setSerializationId(getId());
 			customizeBeanFactory(beanFactory);
 			loadBeanDefinitions(beanFactory);
+//			TODO 这一步重新设置了Bean工厂之后是意味着已经完成了BeanDefinition的定位吗？
 			synchronized (this.beanFactoryMonitor) {
 				this.beanFactory = beanFactory;
 			}

@@ -55,68 +55,20 @@ import org.springframework.lang.Nullable;
  */
 public class FileSystemXmlApplicationContext extends AbstractXmlApplicationContext {
 
-	/**
-	 * Create a new FileSystemXmlApplicationContext for bean-style configuration.
-	 * @see #setConfigLocation
-	 * @see #setConfigLocations
-	 * @see #afterPropertiesSet()
-	 */
 	public FileSystemXmlApplicationContext() {
 	}
-
-	/**
-	 * Create a new FileSystemXmlApplicationContext for bean-style configuration.
-	 * @param parent the parent context
-	 * @see #setConfigLocation
-	 * @see #setConfigLocations
-	 * @see #afterPropertiesSet()
-	 */
 	public FileSystemXmlApplicationContext(ApplicationContext parent) {
 		super(parent);
 	}
-
-	/**
-	 * Create a new FileSystemXmlApplicationContext, loading the definitions
-	 * from the given XML file and automatically refreshing the context.
-	 * @param configLocation file path
-	 * @throws BeansException if context creation failed
-	 */
 	public FileSystemXmlApplicationContext(String configLocation) throws BeansException {
 		this(new String[] {configLocation}, true, null);
 	}
-
-	/**
-	 * Create a new FileSystemXmlApplicationContext, loading the definitions
-	 * from the given XML files and automatically refreshing the context.
-	 * @param configLocations array of file paths
-	 * @throws BeansException if context creation failed
-	 */
 	public FileSystemXmlApplicationContext(String... configLocations) throws BeansException {
 		this(configLocations, true, null);
 	}
-
-	/**
-	 * Create a new FileSystemXmlApplicationContext with the given parent,
-	 * loading the definitions from the given XML files and automatically
-	 * refreshing the context.
-	 * @param configLocations array of file paths
-	 * @param parent the parent context
-	 * @throws BeansException if context creation failed
-	 */
 	public FileSystemXmlApplicationContext(String[] configLocations, ApplicationContext parent) throws BeansException {
 		this(configLocations, true, parent);
 	}
-
-	/**
-	 * Create a new FileSystemXmlApplicationContext, loading the definitions
-	 * from the given XML files.
-	 * @param configLocations array of file paths
-	 * @param refresh whether to automatically refresh the context,
-	 * loading all bean definitions and creating all singletons.
-	 * Alternatively, call refresh manually after further configuring the context.
-	 * @throws BeansException if context creation failed
-	 * @see #refresh()
-	 */
 	public FileSystemXmlApplicationContext(String[] configLocations, boolean refresh) throws BeansException {
 		this(configLocations, refresh, null);
 	}
@@ -143,7 +95,6 @@ public class FileSystemXmlApplicationContext extends AbstractXmlApplicationConte
 		}
 	}
 
-
 	/**
 	 *将资源路径解析为文件系统路径。
 	 *＜p＞注意：即使给定的路径以斜杠开头，它也会得到
@@ -160,5 +111,4 @@ public class FileSystemXmlApplicationContext extends AbstractXmlApplicationConte
 		}
 		return new FileSystemResource(path);
 	}
-
 }
