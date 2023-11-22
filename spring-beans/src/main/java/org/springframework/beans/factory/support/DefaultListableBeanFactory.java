@@ -801,7 +801,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 
 		BeanDefinition oldBeanDefinition;
-
+//		老版本的这个地方就开始加锁了，但是现在新版本的到下面判断了不重复才开始加锁
 		oldBeanDefinition = this.beanDefinitionMap.get(beanName);
 		if (oldBeanDefinition != null) {
 			if (!isAllowBeanDefinitionOverriding()) {
@@ -835,6 +835,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 		else {
 			if (hasBeanCreationStarted()) {
+//				这个地方不是应该是线程安全的吗？为什么要加synchronized，目前是如果有Bean正在创建的话，就缓一缓
 				// Cannot modify startup-time collection elements anymore (for stable iteration)
 				synchronized (this.beanDefinitionMap) {
 					this.beanDefinitionMap.put(beanName, beanDefinition);

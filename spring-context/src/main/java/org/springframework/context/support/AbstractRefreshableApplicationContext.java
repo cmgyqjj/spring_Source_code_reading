@@ -127,9 +127,11 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			closeBeanFactory();
 		}
 		try {
+//			创建IoC容器，这里用的是DefaultListableBeanFactory
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
 			beanFactory.setSerializationId(getId());
 			customizeBeanFactory(beanFactory);
+//			启动对BeanDefinition的载入
 			loadBeanDefinitions(beanFactory);
 //			TODO 这一步重新设置了Bean工厂之后是意味着已经完成了BeanDefinition的定位吗？
 			synchronized (this.beanFactoryMonitor) {
