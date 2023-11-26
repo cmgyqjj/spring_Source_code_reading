@@ -75,6 +75,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 									(PrivilegedExceptionAction<Constructor<?>>) () -> clazz.getDeclaredConstructor());
 						}
 						else {
+//							通过反射获取无参构造函数
 							constructorToUse =	clazz.getDeclaredConstructor();
 						}
 						bd.resolvedConstructorOrFactoryMethod = constructorToUse;
@@ -84,6 +85,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 					}
 				}
 			}
+//			ctor.newInstance() 通过反射创建对象，这里还和KotlinDelegate进行了判断，可能是为了兼容Kotlin
 			return BeanUtils.instantiateClass(constructorToUse);
 		}
 		else {
