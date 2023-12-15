@@ -127,10 +127,13 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			closeBeanFactory();
 		}
 		try {
-//			创建IoC容器，这里用的是DefaultListableBeanFactory
+//			创建IoC容器，这里用的是DefaultListableBeanFactory，这个类是BeanFactory的实现类
+//			这里很重要，之前面试被问到过，BeanFactory是怎么创建的
+//			在这里它是直接使用的new的方法，new了一个 DefaultListableBeanFactory 对象
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
 			beanFactory.setSerializationId(getId());
 			customizeBeanFactory(beanFactory);
+//			这里是一个模板方法，具体的实现在子类中，把BeanDefinitions载入到BeanFactory中
 //			启动对BeanDefinition的载入
 			loadBeanDefinitions(beanFactory);
 //			TODO 这一步重新设置了Bean工厂之后是意味着已经完成了BeanDefinition的定位吗？
@@ -206,6 +209,9 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	 * @see org.springframework.beans.factory.support.DefaultListableBeanFactory#setAllowRawInjectionDespiteWrapping
 	 */
 	protected DefaultListableBeanFactory createBeanFactory() {
+//		getInternalParentBeanFactory()方法是获取父类的BeanFactory,这里感觉相当于一个双亲委派模式
+//		在创建子类工程的时候，先去获取工厂的父类，然后DefaultListableBeanFactory的构造方法中使用super(parentBeanFactory)的方式
+//		对父类的BeanFactory进行初始化
 		return new DefaultListableBeanFactory(getInternalParentBeanFactory());
 	}
 

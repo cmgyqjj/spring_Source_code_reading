@@ -84,13 +84,15 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/** Cache of singleton factories: bean name --> ObjectFactory */
 	/**
-	 * 二级缓存
+	 * 三级缓存
+	 * 为什么这里用的是ObjectFactory<?>而不是Object呢？
+	 * 这里提供的是一个函数式接口
 	 */
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
 
 	/** Cache of early singleton objects: bean name --> bean instance */
 	/**
-	 * 三级缓存
+	 * 二级缓存
 	 */
 	private final Map<String, Object> earlySingletonObjects = new HashMap<>(16);
 
