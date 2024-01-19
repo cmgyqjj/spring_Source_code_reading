@@ -249,6 +249,7 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 	@Override
 	@Nullable
 	public Object getObject() throws BeansException {
+//		初始化通知链
 		initializeAdvisorChain();
 		if (isSingleton()) {
 			return getSingletonInstance();
@@ -431,11 +432,13 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 	 * are unaffected by such changes.
 	 */
 	private synchronized void initializeAdvisorChain() throws AopConfigException, BeansException {
+//		判断是否初始化过了
 		if (this.advisorChainInitialized) {
 			return;
 		}
-
+//		判断一下拦截器名字是不是空
 		if (!ObjectUtils.isEmpty(this.interceptorNames)) {
+//			尝试找到BeanFactory
 			if (this.beanFactory == null) {
 				throw new IllegalStateException("No BeanFactory available anymore (probably due to serialization) " +
 						"- cannot resolve interceptor names " + Arrays.asList(this.interceptorNames));
@@ -446,7 +449,7 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 					this.targetName == null && this.targetSource == EMPTY_TARGET_SOURCE) {
 				throw new AopConfigException("Target required after globals");
 			}
-
+//			遍历拦截器名
 			// Materialize interceptor chain from bean names.
 			for (String name : this.interceptorNames) {
 				if (logger.isTraceEnabled()) {
@@ -458,13 +461,13 @@ public class ProxyFactoryBean extends ProxyCreatorSupport
 						throw new AopConfigException(
 								"Can only use global advisors or interceptors with a ListableBeanFactory");
 					}
+//					把拦截器添加到链上
 					addGlobalAdvisor((ListableBeanFactory) this.beanFactory,
 							name.substring(0, name.length() - GLOBAL_SUFFIX.length()));
 				}
 
 				else {
-					// If we get here, we need to add a named interceptor.
-					// We must check if it's a singleton or prototype.
+//					如果程序这个地方被调用，则需要添加Advice，并且检查是单例还是多例的
 					Object advice;
 					if (this.singleton || this.beanFactory.isSingleton(name)) {
 						// Add the real Advisor/Advice to the chain.

@@ -59,10 +59,11 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 
 	@Override
 	public Object instantiate(RootBeanDefinition bd, @Nullable String beanName, BeanFactory owner) {
-		// Don't override the class with CGLIB if no overrides.
+//		如果没有方法重写，就直接通过反射创建对象
 		if (!bd.hasMethodOverrides()) {
 			Constructor<?> constructorToUse;
 			synchronized (bd.constructorArgumentLock) {
+//				这里取到的是无参构造函数或是生成对象的工厂方法来实例化对象
 				constructorToUse = (Constructor<?>) bd.resolvedConstructorOrFactoryMethod;
 				if (constructorToUse == null) {
 					final Class<?> clazz = bd.getBeanClass();
@@ -86,10 +87,11 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 				}
 			}
 //			ctor.newInstance() 通过反射创建对象，这里还和KotlinDelegate进行了判断，可能是为了兼容Kotlin
+//			这里是第一种通过反射创建对象的方式
 			return BeanUtils.instantiateClass(constructorToUse);
 		}
 		else {
-			// Must generate CGLIB subclass.
+			// 这是第二种通过CGLIB来创建对象的方式
 			return instantiateWithMethodInjection(bd, beanName, owner);
 		}
 	}
